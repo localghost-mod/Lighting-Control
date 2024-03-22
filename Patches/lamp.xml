@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[@ParentName = 'LampBase' and not (comps/li[@Class = 'CompProperties_Schedule']) and not (tickerType)]</xpath>
+        <value><tickerType>Rare</tickerType></value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[@ParentName = 'LampBase' and not (comps/li[@Class = 'CompProperties_Schedule'])]/comps</xpath>
+        <value>
+            <li Class="Lighting_Control.CompProperties_LightingControl"/>
+        </value>
+    </Operation>
+</Patch>

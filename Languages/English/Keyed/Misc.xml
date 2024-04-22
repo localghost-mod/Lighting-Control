@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
     <LightingControl>Lighting Control</LightingControl>
-    <LightingControl.OffMessage>Off when there are no awake colonists nearby.</LightingControl.OffMessage>
+    <LightingControl.OffMessage>Power off.</LightingControl.OffMessage>
     <Lighting_Control.AlwaysOnLabel>Always On</Lighting_Control.AlwaysOnLabel>
     <Lighting_Control.AwalysOnDesc>Determine whether the lamp will be always on.</Lighting_Control.AwalysOnDesc>
-    <LightingControl.AlwaysOnInRoomWithPawns>On in room iff there exist awake colonists (slightly improve the performance)</LightingControl.AlwaysOnInRoomWithPawns>
+    <LightingControl.AdvancedLightRequired>Research advanced lights required</LightingControl.AdvancedLightRequired>
+    <LightingControl.AlwaysOnInDoorWithPawns>On indoor iff there exist awake colonists (slightly improve the performance)</LightingControl.AlwaysOnInDoorWithPawns>
+    <LightingControl.AlwaysOnOutDoorAtNight>On outdoor iff the daylight level is less than 50% (slightly improve the performance)</LightingControl.AlwaysOnOutDoorAtNight>
 </LanguageData>

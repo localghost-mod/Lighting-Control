@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
     <LightingControl>灯光控制</LightingControl>
-    <LightingControl.OffMessage>附近无清醒殖民者时关闭。</LightingControl.OffMessage>
+    <LightingControl.OffMessage>关闭灯光。</LightingControl.OffMessage>
     <Lighting_Control.AlwaysOnLabel>总是连通电路</Lighting_Control.AlwaysOnLabel>
     <Lighting_Control.AwalysOnDesc>切换是否总是连通电路。</Lighting_Control.AwalysOnDesc>
-    <LightingControl.AlwaysOnInRoomWithPawns>室内开启当且仅当有清醒殖民者（轻度提高性能）</LightingControl.AlwaysOnInRoomWithPawns>
+    <LightingControl.AdvancedLightRequired>需要研究改进照明</LightingControl.AdvancedLightRequired>
+    <LightingControl.AlwaysOnInDoorWithPawns>室内开启当且仅当有清醒殖民者（轻度提高性能）</LightingControl.AlwaysOnInDoorWithPawns>
+    <LightingControl.AlwaysOnOutDoorAtNight>室外开启当且仅当自然光照低于50%（轻度提高性能）</LightingControl.AlwaysOnOutDoorAtNight>
 </LanguageData>

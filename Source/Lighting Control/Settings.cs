@@ -5,11 +5,13 @@ namespace Lighting_Control
 {
     class Settings : ModSettings
     {
-        public bool alwaysOnInRoomWithPawns;
+        public bool alwaysOnInDoorWithPawns;
+        public bool alwaysOnOutDoorAtNight;
+        public bool advancedLightRequired;
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref alwaysOnInRoomWithPawns, "alwaysOnInRoomWithPawns");
+            Scribe_Values.Look(ref alwaysOnInDoorWithPawns, "alwaysOnInDoorWithPawns");
         }
 
         public void DoWindowContents(Rect inRect)
@@ -17,12 +19,30 @@ namespace Lighting_Control
             var height = 28f;
             var ls = new Listing_Standard();
             ls.Begin(inRect);
-            var rowRect = ls.GetRect(height);
-            var row = new WidgetRow(rowRect.x, rowRect.y, UIDirection.RightThenDown, ls.ColumnWidth);
-            row.Label("LightingControl.AlwaysOnInRoomWithPawns".Translate());
-            var rowRight = new WidgetRow(ls.ColumnWidth, row.FinalY, UIDirection.LeftThenDown);
-            if (rowRight.ButtonIcon(alwaysOnInRoomWithPawns ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex))
-                alwaysOnInRoomWithPawns = !alwaysOnInRoomWithPawns;
+            {
+                var rowRect = ls.GetRect(height);
+                var row = new WidgetRow(rowRect.x, rowRect.y, UIDirection.RightThenDown, ls.ColumnWidth);
+                row.Label("LightingControl.AdvancedLightRequired".Translate());
+                var rowRight = new WidgetRow(ls.ColumnWidth, row.FinalY, UIDirection.LeftThenDown);
+                if (rowRight.ButtonIcon(advancedLightRequired ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex))
+                    advancedLightRequired = !advancedLightRequired;
+            }
+            {
+                var rowRect = ls.GetRect(height);
+                var row = new WidgetRow(rowRect.x, rowRect.y, UIDirection.RightThenDown, ls.ColumnWidth);
+                row.Label("LightingControl.AlwaysOnInDoorWithPawns".Translate());
+                var rowRight = new WidgetRow(ls.ColumnWidth, row.FinalY, UIDirection.LeftThenDown);
+                if (rowRight.ButtonIcon(alwaysOnInDoorWithPawns ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex))
+                    alwaysOnInDoorWithPawns = !alwaysOnInDoorWithPawns;
+            }
+            {
+                var rowRect = ls.GetRect(height);
+                var row = new WidgetRow(rowRect.x, rowRect.y, UIDirection.RightThenDown, ls.ColumnWidth);
+                row.Label("LightingControl.AlwaysOnOutDoorAtNight".Translate());
+                var rowRight = new WidgetRow(ls.ColumnWidth, row.FinalY, UIDirection.LeftThenDown);
+                if (rowRight.ButtonIcon(alwaysOnOutDoorAtNight ? Widgets.CheckboxOnTex : Widgets.CheckboxOffTex))
+                    alwaysOnOutDoorAtNight = !alwaysOnOutDoorAtNight;
+            }
             ls.End();
         }
     }

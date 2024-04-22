@@ -27,11 +27,11 @@ namespace Lighting_Control
         CompGlower glower;
         public IntVec3 GlowPosition => parent.Position;
         public Room CurRoom => parent.GetRoom();
-        public bool PawnsInroom =>
+        public bool PawnsIndoor =>
 #if v1_4
-            CurRoom.ContainedAndAdjacentThings.Any(thing => thing is Pawn pawn && pawn.RaceProps.Humanlike && pawn.Awake());
+            CurRoom.ContainedAndAdjacentThings.Any(thing => thing is Pawn pawn && (pawn.RaceProps.Humanlike || pawn.RaceProps.IsMechanoid) && pawn.Awake());
 #else
-            CurRoom.ContainedThings<Pawn>().Any(pawn => pawn.RaceProps.Humanlike && pawn.Awake());
+            CurRoom.ContainedThings<Pawn>().Any(pawn => (pawn.RaceProps.Humanlike || pawn.RaceProps.IsMechanoid) && pawn.Awake());
 #endif
 
         public bool Allowed
@@ -50,8 +50,11 @@ namespace Lighting_Control
             }
         }
         bool allowed = true;
+        float CurSkyGlow => parent.Map.skyManager.CurSkyGlow;
 
         public bool AlwaysOn = false;
+
+        public override void PostExposeData() => Scribe_Values.Look(ref AlwaysOn, "alwaysOn");
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
@@ -64,24 +67,36 @@ namespace Lighting_Control
                 toggleAction = () => AlwaysOn = !AlwaysOn
             };
         }
+        public override void CompTick()
+        {
+            if (Find.TickManager.TicksGame % 250 == 0)
+                CompTickRare();
+        }
 
         public override void CompTickRare()
         {
-            if (AlwaysOn)
+            if (AlwaysOn || (LightingControl.settings.advancedLightRequired && !ResearchProjectDefOf.ColoredLights.IsFinished))
             {
                 Allowed = true;
                 return;
             }
-            if (LightingControl.settings.alwaysOnInRoomWithPawns && !CurRoom.PsychologicallyOutdoors)
+            if (LightingControl.settings.alwaysOnInDoorWithPawns && !CurRoom.PsychologicallyOutdoors)
             {
-                Allowed = PawnsInroom;
+                Allowed = PawnsIndoor;
+                return;
+            }
+            if (LightingControl.settings.alwaysOnOutDoorAtNight && CurRoom.PsychologicallyOutdoors)
+            {
+                Allowed = CurSkyGlow < Props.threshold;
                 return;
             }
             var glowGrid = parent.Map.glowGrid;
             if (Glower.Glows)
             {
                 glowGrid.DeRegisterGlower(Glower);
+#if v1_4
                 glowGrid.GlowGridUpdate_First();
+#endif
             }
 #if v1_4
             var glowLevel = glowGrid.GameGlowAt(GlowPosition);
@@ -91,11 +106,13 @@ namespace Lighting_Control
             if (Glower.Glows)
             {
                 glowGrid.RegisterGlower(Glower);
+#if v1_4
                 glowGrid.GlowGridUpdate_First();
+#endif
             }
             var result = glowLevel < Props.threshold;
             if (result && !CurRoom.PsychologicallyOutdoors)
-                result = PawnsInroom;
+                result = PawnsIndoor;
             Allowed = result;
         }
 
